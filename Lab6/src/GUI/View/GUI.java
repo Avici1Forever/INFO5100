@@ -108,6 +108,7 @@ public class GUI {
         this.percentageOfClassHint = new JLabel("Percentage of Class");
         this.weightedScoreHint = new JLabel("Weighted Score");
         this.weightedScore = new JTextField();
+        weightedScore.setDisabledTextColor(Color.red);
         weightedScore.setEnabled(false);  //  user can not input in this text
         this.totalAssignmentPoints = new JTextField();
         this.earnedPoints = new JTextField();
