@@ -1,6 +1,5 @@
 package Karl;
 
-import Karl.Controller.StudentController;
 import Karl.View.Login;
 
 public class Main {

@@ -1,6 +1,6 @@
 package Karl.View;
 
-import Karl.Controller.StudentController;
+import Karl.Controller.LoginController;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -21,6 +21,7 @@ public class Login {
     private JTextField email;  //  input area for email
     private JPasswordField password;  //  input area for password
     private JButton login;  //  button to login
+    private LoginController loginController = new LoginController();
 
     public JFrame getFrame() {
         return frame;
@@ -86,8 +87,11 @@ public class Login {
                 String Password = String.valueOf(password.getPassword());
                 System.out.println(Email);
                 System.out.println(Password);
-                StudentController studentController = new StudentController();
-                studentController.login(Email,Password);
+                Integer id = loginController.studentLogin(Email,Password);
+                if(id!=null) {// login method
+                    frame.dispose();
+                    new EnrolledCourse(id);
+                }
             }
         });
     }
@@ -105,7 +109,7 @@ public class Login {
         this.login = new JButton("Login");
 
         frame.setSize(750,400);
-        frame.setLocation(760, 340);
+        frame.setLocationRelativeTo(null);
         frame.setResizable(false);  // do NOT allow user to change the size of GUI
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
