@@ -13,6 +13,7 @@ public class SystemMenuBar extends JMenuBar {
     private JMenuItem classesItem1 = new JMenuItem("Enrolled Classes");
     private JMenuItem classesItem2 = new JMenuItem("Registered Classes");
     private JMenuItem classesItem3 = new JMenuItem("Register for Classes");
+    private JMenuItem classesItem4 = new JMenuItem("Search for Classes");
     private JMenuItem userItem1 = new JMenuItem("Sign Out");
 
     public SystemMenuBar(){
@@ -24,6 +25,7 @@ public class SystemMenuBar extends JMenuBar {
         classes.add(classesItem1);
         classes.add(classesItem2);
         classes.add(classesItem3);
+        classes.add(classesItem4);
 
         user.add(userItem1);
 
@@ -67,6 +69,14 @@ public class SystemMenuBar extends JMenuBar {
 
     public void setClassesItem3(JMenuItem classesItem3) {
         this.classesItem3 = classesItem3;
+    }
+
+    public JMenuItem getClassesItem4() {
+        return classesItem4;
+    }
+
+    public void setClassesItem4(JMenuItem classesItem4) {
+        this.classesItem4 = classesItem4;
     }
 
     public JMenuItem getUserItem1() {

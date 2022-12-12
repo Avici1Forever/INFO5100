@@ -102,4 +102,62 @@ public class CourseDao {
         }
         return vector;
     }
+
+    public Vector<RegisteredCourseTable> searchForClasses(String courseCode, String courseName, String courseID) {
+        Vector vector = new Vector();
+        conn = DatabaseConnector.getConnection();
+        try {
+            prep = conn.prepareStatement(
+                    "select DISTINCT A.*,B.firstName,B.lastName,C.programName from Course as A,Professor as B,Program as C where A.courseCode LIKE ? and A.courseName LIKE ? and A.courseID LIKE ? and A.professorID=B.professorID and A.programID=C.programID and A.semester=\"Spring 2023\"");
+            prep.setString(1, "%" + courseCode + "%");
+            prep.setString(2, "%" + courseName + "%");
+            prep.setString(3, "%" + courseID + "%");
+            ResultSet rs = prep.executeQuery();
+            while (rs.next()) {
+                RegisteredCourseTable item = new RegisteredCourseTable();
+                item.setTitle(rs.getString("courseName"));
+                item.setCourseCode(rs.getString("courseCode"));
+                item.setCRN(rs.getInt("courseID"));
+                item.setHours(rs.getInt("courseCredits"));
+                String professorName;
+                professorName = rs.getString("firstName") + ", " + rs.getString("lastName");
+                item.setInstructor(professorName);
+                item.setSubjectDescription(rs.getString("programName"));
+                item.setTerm(rs.getString("semester"));
+                String meetingTime;
+                meetingTime = rs.getString("classTime");
+                if (rs.getString("classTime2") != null) {
+                    meetingTime += " ";
+                    meetingTime += rs.getString("classTime2");
+                }
+                item.setMeetingTime(meetingTime);
+                item.setTotalSeats(rs.getInt("totalSeats"));
+                vector.add(item);
+            }
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+                if (prep != null) {
+                    prep.close();
+                    System.out.println("prep closed");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println(vector);
+        return vector;
+    }
+
 }

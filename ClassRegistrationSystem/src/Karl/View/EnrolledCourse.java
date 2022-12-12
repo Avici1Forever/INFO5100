@@ -51,6 +51,14 @@ public class EnrolledCourse{
                 new RegisterForCourse(ID);
             }
         });
+        jb.getClassesItem4().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("clicked search for classes");
+                frame.dispose();
+                new SearchForClasses(ID);
+            }
+        });
         jb.getUserItem1().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -91,6 +99,7 @@ public class EnrolledCourse{
 
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
+        frame.setResizable(false);  // do NOT allow user to change the size of GUI
 
         System.out.println(ID);
         System.out.println(enrolledCourseController.initialEnrolledCourses(ID));

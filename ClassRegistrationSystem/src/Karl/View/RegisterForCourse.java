@@ -53,6 +53,14 @@ public class RegisterForCourse {
                 new RegisterForCourse(ID);
             }
         });
+        jb.getClassesItem4().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("clicked search for classes");
+                frame.dispose();
+                new SearchForClasses(ID);
+            }
+        });
         jb.getUserItem1().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -114,6 +122,112 @@ public class RegisterForCourse {
 
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
+        frame.setResizable(false);  // do NOT allow user to change the size of GUI
+    }
+
+    public RegisterForCourse(Integer id, Vector<RegisteredCourseTable> values){
+        ID = id;
+        frame.setTitle("Register for Classes");
+        frame.setSize(1020, 600);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new BorderLayout());
+
+
+        // add ActionListener for menu items
+        jb.getClassesItem1().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("clicked enrolled classes");
+                frame.dispose();
+                new EnrolledCourse(ID);
+            }
+        });
+        jb.getClassesItem2().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("clicked registered classes");
+                frame.dispose();
+                new RegisteredCourse(ID);
+            }
+        });
+        jb.getClassesItem3().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("clicked register for classes");
+                frame.dispose();
+                new RegisterForCourse(ID);
+            }
+        });
+        jb.getClassesItem4().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("clicked search for classes");
+                frame.dispose();
+                new SearchForClasses(ID);
+            }
+        });
+        jb.getUserItem1().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Sign out");
+                frame.dispose();
+                new Login();
+            }
+        });
+        frame.add(jb,BorderLayout.NORTH);
+
+        // initial table values
+        String[] columnNames = { "Title", "Subject Description", "Course Code", "CRN", "Hours", "Instructor", "Term", "Meeting Time", "Remained Seats", "Total Seats"};
+        Vector columnNameV = new Vector();
+        for (int column = 0; column < columnNames.length; column++) {
+            columnNameV.add(columnNames[column]);
+        }
+        // get data from database
+        Vector<RegisteredCourseTable> course = values;
+        Vector tableValues = new Vector();
+        for (int i = 0; i < course.size(); i++) {
+            Vector rowV = new Vector();
+            rowV.add(course.elementAt(i).getTitle());
+            rowV.add(course.elementAt(i).getSubjectDescription());
+            rowV.add(course.elementAt(i).getCourseCode());
+            rowV.add(course.elementAt(i).getCRN());
+            rowV.add(course.elementAt(i).getHours());
+            rowV.add(course.elementAt(i).getInstructor());
+            rowV.add(course.elementAt(i).getTerm());
+            rowV.add(course.elementAt(i).getMeetingTime());
+            rowV.add(course.elementAt(i).getRemainedSeats());
+            rowV.add(course.elementAt(i).getTotalSeats());
+            tableValues.add(rowV);
+        }
+        table = new JTable(tableValues, columnNameV);
+        DefaultTableModel defaultTableModel = new DefaultTableModel(tableValues,columnNameV);
+        table = new JTable(defaultTableModel);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setBounds(0, 0, 1020, 500);
+
+        final JScrollPane scrollPane = new JScrollPane(table);
+
+//        scrollPane.setViewportView(panel);
+        frame.getContentPane().add(scrollPane,BorderLayout.CENTER);
+
+        JPanel buttonPanel = new JPanel();
+        frame.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+
+        JButton selectAllButton = new JButton("Register");
+        selectAllButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                registerForCourseController.registerCourse(ID,(Integer) table.getValueAt(table.getSelectedRow(),3));
+                defaultTableModel.getDataVector().clear();
+                defaultTableModel.setDataVector(refreshData(),columnNameV);
+                table.updateUI();
+            }
+        });
+        buttonPanel.add(selectAllButton);
+
+
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+        frame.setResizable(false);  // do NOT allow user to change the size of GUI
     }
 
     public Vector refreshData(){
