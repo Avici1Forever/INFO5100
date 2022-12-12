@@ -9,10 +9,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class StudentDao {
-    private Connection conn= DatabaseConnector.getConnection();
+    private Connection conn;
 
     public Student selectStudentByStudentID(Integer studentID){
         Student student = new Student();
+        conn = DatabaseConnector.getConnection();
         try {
             PreparedStatement prep = conn.prepareStatement(
                     "select * from Student where studentID=?");
@@ -29,11 +30,19 @@ public class StudentDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        try{
+            if (conn!=null){
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return student;
     }
 
     public Student selectStudentByEmail(String email, String password){
         Student student = new Student();
+        conn = DatabaseConnector.getConnection();
         try {
             PreparedStatement prep = conn.prepareStatement(
                     "select * from Student where email=? and password=?");
@@ -47,6 +56,13 @@ public class StudentDao {
                 student.setFirstName(rs.getString("firstName"));
                 student.setLastName(rs.getString("lastName"));
                 student.setProgramID(rs.getInt("programID"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try{
+            if (conn!=null){
+                conn.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();

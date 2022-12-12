@@ -1,9 +1,13 @@
 package Karl.View;
 
+import Karl.Controller.RegisterForCourseController;
 import Karl.Controller.RegisteredCourseController;
-import Karl.Util.EnrolledCourseTable;
+import Karl.Dao.StudentCourseDao;
+import Karl.Util.RegisteredCourseTable;
+import Karl.Util.SystemMenuBar;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,23 +17,90 @@ public class RegisteredCourse {
     private static  Integer ID = null;
     private JTable table;
     private JFrame frame = new JFrame();
+    private JPanel panel = new JPanel();
+    private SystemMenuBar jb = new SystemMenuBar();
     private RegisteredCourseController registeredCourseController = new RegisteredCourseController();
 
     public RegisteredCourse(Integer id) {
         ID = id;
-        frame.setTitle("Enrolled Courses");
-        frame.setBounds(100, 100, 1020, 600);
+        frame.setTitle("Registered Classes");
+        frame.setSize(1020, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new BorderLayout());
 
-        final JScrollPane scrollPane = new JScrollPane();
-        frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
+
+        // add ActionListener for menu items
+        jb.getClassesItem1().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("clicked enrolled classes");
+                frame.dispose();
+                new EnrolledCourse(ID);
+            }
+        });
+        jb.getClassesItem2().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("clicked registered classes");
+                frame.dispose();
+                new RegisteredCourse(ID);
+            }
+        });
+        jb.getClassesItem3().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("clicked register for classes");
+                frame.dispose();
+                new RegisterForCourse(ID);
+            }
+        });
+        jb.getUserItem1().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Sign out");
+                frame.dispose();
+                new Login();
+            }
+        });
+        frame.add(jb,BorderLayout.NORTH);
+
 
         String[] columnNames = { "Title", "Subject Description", "Course Code", "CRN", "Hours", "Instructor", "Term", "Meeting Time", "Remained Seats", "Total Seats"};
         Vector columnNameV = new Vector();
         for (int column = 0; column < columnNames.length; column++) {
             columnNameV.add(columnNames[column]);
         }
-        Vector<EnrolledCourseTable> course = registeredCourseController.initialRegisteredCourses(ID);
+        Vector tableValues = refreshData();
+        DefaultTableModel defaultTableModel = new DefaultTableModel(tableValues,columnNameV);
+        table = new JTable(defaultTableModel);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setBounds(0, 0, 1020, 570);
+
+        final JScrollPane scrollPane = new JScrollPane(table);
+
+//        scrollPane.setViewportView(panel);
+        frame.getContentPane().add(scrollPane,BorderLayout.CENTER);
+
+        JPanel buttonPanel = new JPanel();
+        frame.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+
+        JButton selectAllButton = new JButton("Drop");
+        selectAllButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                registeredCourseController.dropCourse(ID, (Integer) table.getValueAt(table.getSelectedRow(),3)); // drop class
+                defaultTableModel.getDataVector().clear();
+                defaultTableModel.setDataVector(refreshData(),columnNameV);
+                table.updateUI();
+            }
+        });
+        buttonPanel.add(selectAllButton);
+
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+    }
+    // get data from database
+    public Vector refreshData(){
+        Vector<RegisteredCourseTable> course = registeredCourseController.initialRegisteredCourses(ID);
         Vector tableValues = new Vector();
         for (int i = 0; i < course.size(); i++) {
             Vector rowV = new Vector();
@@ -45,35 +116,7 @@ public class RegisteredCourse {
             rowV.add(course.elementAt(i).getTotalSeats());
             tableValues.add(rowV);
         }
-        table = new JTable(tableValues, columnNameV);
-//        table.setRowSelectionInterval(1, 3);
-//        table.addRowSelectionInterval(5, 5);
-        scrollPane.setViewportView(table);
-
-        JPanel buttonPanel = new JPanel();
-        frame.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-
-        JButton selectAllButton = new JButton("全部选择");
-        selectAllButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                table.selectAll();// 选中所有行
-            }
-        });
-        buttonPanel.add(selectAllButton);
-
-        JButton clearSelectionButton = new JButton("取消选择");
-        clearSelectionButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                table.clearSelection();// 取消所有选中行的选择状态
-            }
-        });
-        buttonPanel.add(clearSelectionButton);
-
-
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
-
-        System.out.println(ID);
-        System.out.println(registeredCourseController.initialRegisteredCourses(ID));
+        return tableValues;
     }
+
 }

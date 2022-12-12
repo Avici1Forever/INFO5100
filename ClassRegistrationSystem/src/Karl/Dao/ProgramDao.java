@@ -9,9 +9,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ProgramDao {
-    private Connection conn= DatabaseConnector.getConnection();
+    private Connection conn;
     public Program selectProgramByProgramID(Integer programID){
         Program program = new Program();
+        conn = DatabaseConnector.getConnection();
         try {
             PreparedStatement prep = conn.prepareStatement(
                     "select * from Program where programID=?");
@@ -21,6 +22,13 @@ public class ProgramDao {
                 program.setProgramID(rs.getInt("programID"));
                 program.setProgramName(rs.getString("programName"));
                 program.setRequiredCredits(rs.getInt("requiredCredits"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try{
+            if (conn!=null){
+                conn.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();

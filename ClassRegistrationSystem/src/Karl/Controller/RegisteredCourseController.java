@@ -18,4 +18,9 @@ public class RegisteredCourseController {
         }
         return vector;
     }
+
+    public void dropCourse(Integer studentID,Integer courseID){
+        studentCourseDao.dropCourse(studentID,courseID);
+    }
+
 }
