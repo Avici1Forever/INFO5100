@@ -42,6 +42,12 @@ public class StudentCourseDao {
                 item.setTotalSeats(rs.getInt("totalSeats"));
                 vector.add(item);
             }
+            if(rs!=null){
+                rs.close();
+            }
+            if(prep!=null){
+                prep.close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -84,6 +90,12 @@ public class StudentCourseDao {
                 item.setTotalSeats(rs.getInt("totalSeats"));
                 vector.add(item);
             }
+            if(rs!=null){
+                rs.close();
+            }
+            if(prep!=null){
+                prep.close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -105,6 +117,9 @@ public class StudentCourseDao {
             prep.setInt(1, studentID);
             prep.setInt(2, courseID);
             prep.execute();
+            if(prep!=null){
+                prep.close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -125,6 +140,9 @@ public class StudentCourseDao {
             prep.setInt(1, studentID);
             prep.setInt(2, courseID);
             prep.execute();
+            if(prep!=null){
+                prep.close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -147,6 +165,12 @@ public class StudentCourseDao {
             ResultSet rs=prep.executeQuery();
             if(rs.next()){// already registered
                 return true;
+            }
+            if(rs!=null){
+                rs.close();
+            }
+            if(prep!=null){
+                prep.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();

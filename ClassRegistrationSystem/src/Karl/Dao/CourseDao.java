@@ -24,6 +24,12 @@ public class CourseDao {
             if(rs.next()){
                 remainedSeats=rs.getInt("remainedSeats");
             }
+            if(rs!=null){
+                rs.close();
+            }
+            if(prep!=null){
+                prep.close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -36,6 +42,7 @@ public class CourseDao {
         }
         return remainedSeats;
     }
+
     public Vector<RegisteredCourseTable> selectCourseForRegistration(){
         Vector vector = new Vector();
         conn = DatabaseConnector.getConnection();
@@ -63,6 +70,12 @@ public class CourseDao {
                 item.setMeetingTime(meetingTime);
                 item.setTotalSeats(rs.getInt("totalSeats"));
                 vector.add(item);
+            }
+            if(rs!=null){
+                rs.close();
+            }
+            if(prep!=null){
+                prep.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();

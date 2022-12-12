@@ -5,6 +5,8 @@ import Karl.Dao.StudentCourseDao;
 import Karl.Util.EnrolledCourseTable;
 import Karl.Util.RegisteredCourseTable;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.Vector;
 
 public class RegisteredCourseController {
@@ -20,7 +22,11 @@ public class RegisteredCourseController {
     }
 
     public void dropCourse(Integer studentID,Integer courseID){
-        studentCourseDao.dropCourse(studentID,courseID);
+        int opt = JOptionPane.showConfirmDialog(null,"Are you sure to drop this class?","Drop",JOptionPane.YES_NO_OPTION);
+        if(opt == JOptionPane.YES_OPTION){ // confirm drop
+            studentCourseDao.dropCourse(studentID,courseID);
+            JOptionPane.showMessageDialog(null,"Successfully dropped！","Success",JOptionPane.PLAIN_MESSAGE);
+        }
     }
 
 }

@@ -23,10 +23,11 @@ public class RegisterForCourseController {
     public void registerCourse(Integer studentID,Integer courseID){
         if(studentCourseDao.ifRegistered(studentID,courseID)){
             Toolkit.getDefaultToolkit().beep(); // remove icon
-            JOptionPane.showMessageDialog(null, "Incorrect email or password!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "You already registered this class!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         studentCourseDao.registerCourse(studentID,courseID);
+        JOptionPane.showMessageDialog(null,"Successfully registered！","Success",JOptionPane.PLAIN_MESSAGE);
     }
 
 }

@@ -23,6 +23,12 @@ public class ProgramDao {
                 program.setProgramName(rs.getString("programName"));
                 program.setRequiredCredits(rs.getInt("requiredCredits"));
             }
+            if(rs!=null){
+                rs.close();
+            }
+            if(prep!=null){
+                prep.close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -27,6 +27,12 @@ public class StudentDao {
                 student.setLastName(rs.getString("lastName"));
                 student.setProgramID(rs.getInt("programID"));
             }
+            if(rs!=null){
+                rs.close();
+            }
+            if(prep!=null){
+                prep.close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -56,6 +62,12 @@ public class StudentDao {
                 student.setFirstName(rs.getString("firstName"));
                 student.setLastName(rs.getString("lastName"));
                 student.setProgramID(rs.getInt("programID"));
+            }
+            if(rs!=null){
+                rs.close();
+            }
+            if(prep!=null){
+                prep.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
