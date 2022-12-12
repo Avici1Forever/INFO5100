@@ -90,7 +90,7 @@ public class RegisterForCourse {
         DefaultTableModel defaultTableModel = new DefaultTableModel(tableValues,columnNameV);
         table = new JTable(defaultTableModel);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.setBounds(0, 0, 1020, 570);
+        table.setBounds(0, 0, 1020, 500);
 
         final JScrollPane scrollPane = new JScrollPane(table);
 

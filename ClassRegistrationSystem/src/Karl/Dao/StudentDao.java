@@ -3,6 +3,7 @@ package Karl.Dao;
 import Karl.Model.Student;
 
 import Karl.Util.DatabaseConnector;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,16 +11,17 @@ import java.sql.SQLException;
 
 public class StudentDao {
     private Connection conn;
+    private PreparedStatement prep;
 
-    public Student selectStudentByStudentID(Integer studentID){
+    public Student selectStudentByStudentID(Integer studentID) {
         Student student = new Student();
         conn = DatabaseConnector.getConnection();
         try {
-            PreparedStatement prep = conn.prepareStatement(
+            prep = conn.prepareStatement(
                     "select * from Student where studentID=?");
             prep.setInt(1, studentID);
             ResultSet rs = prep.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 student.setStudentID(rs.getInt("studentID"));
                 student.setEmail(rs.getString("email"));
                 student.setPassword(rs.getString("password"));
@@ -27,35 +29,41 @@ public class StudentDao {
                 student.setLastName(rs.getString("lastName"));
                 student.setProgramID(rs.getInt("programID"));
             }
-            if(rs!=null){
-                rs.close();
-            }
-            if(prep!=null){
-                prep.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try{
-            if (conn!=null){
-                conn.close();
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+                if (prep != null) {
+                    prep.close();
+                    System.out.println("prep closed");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return student;
     }
 
-    public Student selectStudentByEmail(String email, String password){
+    public Student selectStudentByEmail(String email, String password) {
         Student student = new Student();
         conn = DatabaseConnector.getConnection();
         try {
-            PreparedStatement prep = conn.prepareStatement(
+            prep = conn.prepareStatement(
                     "select * from Student where email=? and password=?");
             prep.setString(1, email);
             prep.setString(2, password);
             ResultSet rs = prep.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 student.setStudentID(rs.getInt("studentID"));
                 student.setEmail(rs.getString("email"));
                 student.setPassword(rs.getString("password"));
@@ -63,21 +71,30 @@ public class StudentDao {
                 student.setLastName(rs.getString("lastName"));
                 student.setProgramID(rs.getInt("programID"));
             }
-            if(rs!=null){
-                rs.close();
-            }
-            if(prep!=null){
-                prep.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try{
-            if (conn!=null){
-                conn.close();
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (prep != null) {
+                    prep.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+                if (prep != null) {
+                    prep.close();
+                    System.out.println("prep closed");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return student;
     }

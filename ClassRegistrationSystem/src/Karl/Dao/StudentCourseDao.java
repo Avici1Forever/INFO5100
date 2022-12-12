@@ -12,12 +12,13 @@ import java.util.Vector;
 
 public class StudentCourseDao {
     private Connection conn;
+    private PreparedStatement prep;
 
     public Vector<EnrolledCourseTable> selectEnrolledCourseByStudentID(Integer studentID) {
         Vector vector = new Vector();
         conn = DatabaseConnector.getConnection();
         try {
-            PreparedStatement prep = conn.prepareStatement(
+            prep = conn.prepareStatement(
                     "select A.*,B.firstName,B.lastName,C.programName from Course as A,Professor as B,Program as C where A.courseID IN(select courseID from StudentCourse where studentID=? and status=\"enrolled\") and A.professorID=B.professorID and A.programID=C.programID");
             prep.setInt(1, studentID);
             ResultSet rs = prep.executeQuery();
@@ -28,31 +29,31 @@ public class StudentCourseDao {
                 item.setCRN(rs.getInt("courseID"));
                 item.setHours(rs.getInt("courseCredits"));
                 String professorName;
-                professorName = rs.getString("firstName")+", "+rs.getString("lastName");
+                professorName = rs.getString("firstName") + ", " + rs.getString("lastName");
                 item.setInstructor(professorName);
                 item.setSubjectDescription(rs.getString("programName"));
                 item.setTerm(rs.getString("semester"));
                 String meetingTime;
                 meetingTime = rs.getString("classTime");
-                if(rs.getString("classTime2")!=null){
-                    meetingTime +=" ";
+                if (rs.getString("classTime2") != null) {
+                    meetingTime += " ";
                     meetingTime += rs.getString("classTime2");
                 }
                 item.setMeetingTime(meetingTime);
                 item.setTotalSeats(rs.getInt("totalSeats"));
                 vector.add(item);
             }
-            if(rs!=null){
+            if (rs != null) {
                 rs.close();
             }
-            if(prep!=null){
+            if (prep != null) {
                 prep.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        try{
-            if (conn!=null){
+        try {
+            if (conn != null) {
                 conn.close();
             }
         } catch (SQLException e) {
@@ -61,11 +62,11 @@ public class StudentCourseDao {
         return vector;
     }
 
-    public Vector<RegisteredCourseTable> selectRegisteredCourseByStudentID(Integer studentID){
+    public Vector<RegisteredCourseTable> selectRegisteredCourseByStudentID(Integer studentID) {
         Vector vector = new Vector();
         conn = DatabaseConnector.getConnection();
         try {
-            PreparedStatement prep = conn.prepareStatement(
+            prep = conn.prepareStatement(
                     "select A.*,B.firstName,B.lastName,C.programName from Course as A,Professor as B,Program as C where A.courseID IN(select courseID from StudentCourse where studentID=? and status=\"registered\") and A.professorID=B.professorID and A.programID=C.programID");
             prep.setInt(1, studentID);
             ResultSet rs = prep.executeQuery();
@@ -76,112 +77,124 @@ public class StudentCourseDao {
                 item.setCRN(rs.getInt("courseID"));
                 item.setHours(rs.getInt("courseCredits"));
                 String professorName;
-                professorName = rs.getString("firstName")+", "+rs.getString("lastName");
+                professorName = rs.getString("firstName") + ", " + rs.getString("lastName");
                 item.setInstructor(professorName);
                 item.setSubjectDescription(rs.getString("programName"));
                 item.setTerm(rs.getString("semester"));
                 String meetingTime;
                 meetingTime = rs.getString("classTime");
-                if(rs.getString("classTime2")!=null){
-                    meetingTime +=" ";
+                if (rs.getString("classTime2") != null) {
+                    meetingTime += " ";
                     meetingTime += rs.getString("classTime2");
                 }
                 item.setMeetingTime(meetingTime);
                 item.setTotalSeats(rs.getInt("totalSeats"));
                 vector.add(item);
             }
-            if(rs!=null){
-                rs.close();
-            }
-            if(prep!=null){
-                prep.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try{
-            if (conn!=null){
-                conn.close();
+            try {
+                if (rs!=null){
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            try{
+                if (conn!=null){
+                    conn.close();
+                }
+                if(prep!=null){
+                    prep.close();
+                    System.out.println("prep closed");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return vector;
     }
 
-    public void dropCourse(Integer studentID,Integer courseID){
+    public void dropCourse(Integer studentID, Integer courseID) {
         conn = DatabaseConnector.getConnection();
         try {
-            PreparedStatement prep = conn.prepareStatement(
+            prep = conn.prepareStatement(
                     "delete from StudentCourse where studentID=? and courseID=?");
             prep.setInt(1, studentID);
             prep.setInt(2, courseID);
             prep.execute();
-            if(prep!=null){
-                prep.close();
-            }
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        try{
-            if (conn!=null){
-                conn.close();
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+                if (prep != null) {
+                    prep.close();
+                    System.out.println("prep closed");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
-    public void registerCourse(Integer studentID,Integer courseID){
+    public void registerCourse(Integer studentID, Integer courseID) {
         conn = DatabaseConnector.getConnection();
         try {
-            PreparedStatement prep = conn.prepareStatement(
+            prep = conn.prepareStatement(
                     "insert into StudentCourse values(?,?,\"registered\")");
             prep.setInt(1, studentID);
             prep.setInt(2, courseID);
             prep.execute();
-            if(prep!=null){
-                prep.close();
-            }
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        try{
-            if (conn!=null){
-                conn.close();
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+                if (prep != null) {
+                    prep.close();
+                    System.out.println("prep closed");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
-    public boolean ifRegistered(Integer studentID,Integer courseID){
-        conn = DatabaseConnector.getConnection();
+    public boolean ifRegistered(Integer studentID, Integer courseID) {
+
         try {
-            PreparedStatement prep = conn.prepareStatement(
+            conn = DatabaseConnector.getConnection();
+            prep = conn.prepareStatement(
                     "select * from StudentCourse where studentID=? and courseID=? and status=\"registered\"");
             prep.setInt(1, studentID);
             prep.setInt(2, courseID);
-            ResultSet rs=prep.executeQuery();
-            if(rs.next()){// already registered
+            ResultSet rs = prep.executeQuery();
+            if (rs.next()) {// already registered
+                rs.close();
                 return true;
             }
-            if(rs!=null){
-                rs.close();
-            }
-            if(prep!=null){
-                prep.close();
-            }
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        try{
-            if (conn!=null){
-                conn.close();
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+                if (prep != null) {
+                    prep.close();
+                    System.out.println("prep closed");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
+
         return false;
     }
 
