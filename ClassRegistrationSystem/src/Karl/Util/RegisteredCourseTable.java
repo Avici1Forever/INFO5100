@@ -1,5 +1,6 @@
 package Karl.Util;
 
+// Table for RegisteredCourse page and RegisterForCourse page
 public class RegisteredCourseTable {
     private String title;
     private String subjectDescription;

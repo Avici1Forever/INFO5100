@@ -15,6 +15,7 @@ public class LoginController {
     private ProgramDao programDao = new ProgramDao();
 
     public Integer studentLogin(String email, String password) {
+        // verify email and password
         Student student = studentDao.selectStudentByEmail(email, password);
         Professor professor = null;
         if (student.getStudentID() != null) {// correct email and password of a student account
@@ -23,7 +24,7 @@ public class LoginController {
             System.out.println(program.toString());
             return student.getStudentID();
         } else {// incorrect email or password
-            System.out.println("Incorrect email or password!");
+            // show error message to user
             Toolkit.getDefaultToolkit().beep(); // remove icon
             JOptionPane.showMessageDialog(null, "Incorrect email or password!", "Error", JOptionPane.ERROR_MESSAGE);
             return null;

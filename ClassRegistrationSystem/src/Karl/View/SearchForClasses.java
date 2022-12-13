@@ -117,6 +117,8 @@ public class SearchForClasses {
                 String title=courseName.getText();
                 String code=courseCode.getText();
                 frame.dispose();
+                // search classes according to user inputs
+                // open RegisterForCourse page using search results
                 new RegisterForCourse(id,searchForClassesController.searchForClasses(code,title,CRN));
             }
         });

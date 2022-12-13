@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+// MenuBar
 public class SystemMenuBar extends JMenuBar {
     // create a new menu
     private JMenu classes = new JMenu("Course");

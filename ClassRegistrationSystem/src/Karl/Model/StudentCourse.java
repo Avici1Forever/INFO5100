@@ -1,5 +1,6 @@
 package Karl.Model;
 
+// database table StudentCourse
 public class StudentCourse {
     Integer studentID;
     Integer courseID;

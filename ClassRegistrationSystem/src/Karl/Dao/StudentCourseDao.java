@@ -14,6 +14,7 @@ public class StudentCourseDao {
     private Connection conn;
     private PreparedStatement prep;
 
+    // select user's enrolled classes from database by studentID
     public Vector<EnrolledCourseTable> selectEnrolledCourseByStudentID(Integer studentID) {
         Vector vector = new Vector();
         conn = DatabaseConnector.getConnection();
@@ -62,6 +63,7 @@ public class StudentCourseDao {
         return vector;
     }
 
+    // // select user's registered classes from database by studentID
     public Vector<RegisteredCourseTable> selectRegisteredCourseByStudentID(Integer studentID) {
         Vector vector = new Vector();
         conn = DatabaseConnector.getConnection();
@@ -116,6 +118,7 @@ public class StudentCourseDao {
         return vector;
     }
 
+    // delete registered class from database
     public void dropCourse(Integer studentID, Integer courseID) {
         conn = DatabaseConnector.getConnection();
         try {
@@ -141,6 +144,7 @@ public class StudentCourseDao {
         }
     }
 
+    // add registered class into database
     public void registerCourse(Integer studentID, Integer courseID) {
         conn = DatabaseConnector.getConnection();
         try {
@@ -166,16 +170,16 @@ public class StudentCourseDao {
         }
     }
 
+    // check if user is eligible to register for the very class
     public boolean ifRegistered(Integer studentID, Integer courseID) {
-
         try {
             conn = DatabaseConnector.getConnection();
             prep = conn.prepareStatement(
-                    "select * from StudentCourse where studentID=? and courseID=? and status=\"registered\"");
+                    "select * from StudentCourse where studentID=? and courseID=? ");
             prep.setInt(1, studentID);
             prep.setInt(2, courseID);
             ResultSet rs = prep.executeQuery();
-            if (rs.next()) {// already registered
+            if (rs.next()) {// user have either registered for, completed, or are currently taking the course
                 rs.close();
                 return true;
             }
@@ -194,7 +198,6 @@ public class StudentCourseDao {
                 e.printStackTrace();
             }
         }
-
         return false;
     }
 

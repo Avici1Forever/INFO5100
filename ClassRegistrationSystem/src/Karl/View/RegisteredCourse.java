@@ -95,9 +95,15 @@ public class RegisteredCourse {
         JButton selectAllButton = new JButton("Drop");
         selectAllButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (table.getSelectedRow()==-1){// no row selected
+                    return;
+                }
                 registeredCourseController.dropCourse(ID, (Integer) table.getValueAt(table.getSelectedRow(),3)); // drop class
+                // clear table values
                 defaultTableModel.getDataVector().clear();
+                // refresh table values
                 defaultTableModel.setDataVector(refreshData(),columnNameV);
+                // reload table values
                 table.updateUI();
             }
         });
@@ -107,6 +113,7 @@ public class RegisteredCourse {
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);  // do NOT allow user to change the size of GUI
     }
+
     // get data from database
     public Vector refreshData(){
         Vector<RegisteredCourseTable> course = registeredCourseController.initialRegisteredCourses(ID);

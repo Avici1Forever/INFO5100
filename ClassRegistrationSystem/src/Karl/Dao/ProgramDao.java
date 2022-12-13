@@ -13,6 +13,7 @@ public class ProgramDao {
     private Connection conn;
     private PreparedStatement prep;
 
+    // select program from database by programID
     public Program selectProgramByProgramID(Integer programID) {
         Program program = new Program();
         conn = DatabaseConnector.getConnection();

@@ -13,6 +13,8 @@ public class StudentDao {
     private Connection conn;
     private PreparedStatement prep;
 
+
+    // select student from database by studentID
     public Student selectStudentByStudentID(Integer studentID) {
         Student student = new Student();
         conn = DatabaseConnector.getConnection();
@@ -54,6 +56,7 @@ public class StudentDao {
         return student;
     }
 
+    // select student from database by email and password
     public Student selectStudentByEmail(String email, String password) {
         Student student = new Student();
         conn = DatabaseConnector.getConnection();

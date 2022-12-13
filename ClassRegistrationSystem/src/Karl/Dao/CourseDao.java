@@ -13,6 +13,7 @@ public class CourseDao {
     private Connection conn;
     private PreparedStatement prep;
 
+    // calculate remained seats for class
     public Integer calculateRemainedSeats(Integer courseID) {
         Integer remainedSeats = -1;
         conn = DatabaseConnector.getConnection();
@@ -50,6 +51,7 @@ public class CourseDao {
         return remainedSeats;
     }
 
+    // select classes that are available to register
     public Vector<RegisteredCourseTable> selectCourseForRegistration() {
         Vector vector = new Vector();
         conn = DatabaseConnector.getConnection();
@@ -103,6 +105,7 @@ public class CourseDao {
         return vector;
     }
 
+    // search for classes by courseCode, title and CRN
     public Vector<RegisteredCourseTable> searchForClasses(String courseCode, String courseName, String courseID) {
         Vector vector = new Vector();
         conn = DatabaseConnector.getConnection();

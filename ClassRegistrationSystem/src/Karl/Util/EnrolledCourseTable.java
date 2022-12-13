@@ -2,6 +2,7 @@ package Karl.Util;
 
 import javax.xml.soap.SAAJResult;
 
+// Table for EnrolledCourse page
 public class EnrolledCourseTable {
     private String title;
     private String subjectDescription;

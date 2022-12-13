@@ -1,5 +1,6 @@
 package Karl.Model;
 
+// database table Program
 public class Program {
     Integer programID;
     String programName;

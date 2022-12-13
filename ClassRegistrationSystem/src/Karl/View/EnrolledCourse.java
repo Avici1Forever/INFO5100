@@ -74,6 +74,7 @@ public class EnrolledCourse{
         for (int column = 0; column < columnNames.length; column++) {
             columnNameV.add(columnNames[column]);
         }
+        // select user's enrolled classes from database
         Vector<EnrolledCourseTable> course = enrolledCourseController.initialEnrolledCourses(ID);
         Vector tableValues = new Vector();
         for (int i = 0; i < course.size(); i++) {

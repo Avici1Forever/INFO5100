@@ -2,7 +2,7 @@ package Karl.View;
 
 import Karl.Controller.LoginController;
 
-import java.awt.Font;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -85,8 +85,11 @@ public class Login {
             public void actionPerformed(ActionEvent e) {
                 String Email = email.getText();
                 String Password = String.valueOf(password.getPassword());
-                System.out.println(Email);
-                System.out.println(Password);
+                if(Email.length()==0 || Password.length()==0){// empty input
+                    Toolkit.getDefaultToolkit().beep(); // remove icon
+                    JOptionPane.showMessageDialog(null, "Please enter email and password!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 Integer id = loginController.studentLogin(Email,Password);
                 if(id!=null) {// login method
                     frame.dispose();

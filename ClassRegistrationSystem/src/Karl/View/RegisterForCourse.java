@@ -111,9 +111,16 @@ public class RegisterForCourse {
         JButton selectAllButton = new JButton("Register");
         selectAllButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (table.getSelectedRow()==-1){// no row selected
+                    return;
+                }
+                // register for class
                 registerForCourseController.registerCourse(ID,(Integer) table.getValueAt(table.getSelectedRow(),3));
+                // clear table values
                 defaultTableModel.getDataVector().clear();
+                // refresh table values
                 defaultTableModel.setDataVector(refreshData(),columnNameV);
+                // reload table values
                 table.updateUI();
             }
         });
@@ -216,9 +223,16 @@ public class RegisterForCourse {
         JButton selectAllButton = new JButton("Register");
         selectAllButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (table.getSelectedRow()==-1){// no row selected
+                    return;
+                }
+                // register for class
                 registerForCourseController.registerCourse(ID,(Integer) table.getValueAt(table.getSelectedRow(),3));
+                // clear table values
                 defaultTableModel.getDataVector().clear();
+                // refresh table values
                 defaultTableModel.setDataVector(refreshData(),columnNameV);
+                // reload table values
                 table.updateUI();
             }
         });

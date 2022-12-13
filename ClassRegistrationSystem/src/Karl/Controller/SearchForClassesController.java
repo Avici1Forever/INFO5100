@@ -12,8 +12,10 @@ public class SearchForClassesController {
 
     public Vector<RegisteredCourseTable> searchForClasses(String courseCode, String courseName, String courseID){
         Vector<RegisteredCourseTable> vector = new Vector<>();
+        // search for classes from database according to user inputs
         vector = courseDao.searchForClasses(courseCode,courseName,courseID);
         for(int i=0;i<vector.size();i++){
+            // process data so that it fits table format
             vector.elementAt(i).setRemainedSeats(courseDao.calculateRemainedSeats(vector.elementAt(i).getCRN()));
         }
         return vector;
